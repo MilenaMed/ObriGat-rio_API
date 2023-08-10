@@ -15,3 +15,18 @@ export async function postAddService(request, response) {
         return response.status(500).send(err.message)
     }
 };
+
+//GET - Services
+export async function getCats(request, response) {
+    try {
+        const { rows: cats } = await db.query(`
+    SELECT cat."catName", cat.datadescription, cat.photo, cat."ongContact", cat."forAdoption"
+    FROM cat
+    WHERE available = $1;
+`, [true]);
+
+        return response.send(cats);
+    } catch (err) {
+        response.status(500).send(err)
+    }
+};
