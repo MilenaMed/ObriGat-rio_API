@@ -30,3 +30,33 @@ export async function getCats(request, response) {
         response.status(500).send(err)
     }
 };
+
+//UPDATE - availability:id
+export async function updateAvailability(request, response) {
+    const { id } = request.params
+    const { ongId } = response.locals
+
+    try {
+        const chosenCat = await db.query(`SELECT "ongId", available FROM cat WHERE id=$1;`, [id]);
+        console.log(chosenCat.rows[0].available)
+        console.log(ongId)
+        console.log(chosenCat.rows[0].ongId)
+        if (chosenCat.rowCount === 0) {
+            return response.status(404).send("Gato não encontrado")
+        }
+        if (chosenCat.rows[0].ongId !== ongId) {
+            return response.status(404).send("Você não pode editar esse dado")
+        }
+        if (chosenCat.rows[0].available === true) {
+            await db.query(`UPDATE cat SET available = false WHERE "id" = $1;`, [id])
+        }
+        if (chosenCat.rows[0].available === false) {
+            await db.query(`UPDATE cat SET available = true WHERE "id" = $1;`, [id])
+        }
+
+        return response.status(200).send("Disponibilidade ajustada");
+
+    } catch (err) {
+        response.status(500).send(err)
+    }
+};

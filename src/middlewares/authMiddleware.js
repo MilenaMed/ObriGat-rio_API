@@ -11,9 +11,11 @@ export async function authMiddleware(request, response, next) {
         if (isLoged.rowCount === 0) {
             return response.status(401).send("Usuário não está logado")
         }
-        response.locals.ongId = isLoged.rows[0].id
+
+
+        response.locals.ongId = isLoged.rows[0].ongId
         next()
-        
+
     } catch (err) {
         response.status(500).send(err)
     }
