@@ -31,6 +31,24 @@ export async function getCats(request, response) {
     }
 };
 
+//GET - availability
+export async function getMyCats(request, response) {
+    const { ongId } = response.locals
+    try {
+        const { rows: cats } = await db.query(`
+        SELECT cat."catName", cat.photo, cat.available, cat."ongContact", cat.datadescription
+        FROM cat
+        WHERE cat."ongId"=$1
+    `, [ongId]);
+
+        return response.status(200).send(cats)
+
+    } catch (err) {
+        response.status(500).send(err)
+    }
+};
+
+
 //UPDATE - availability:id
 export async function updateAvailability(request, response) {
     const { id } = request.params
@@ -38,9 +56,6 @@ export async function updateAvailability(request, response) {
 
     try {
         const chosenCat = await db.query(`SELECT "ongId", available FROM cat WHERE id=$1;`, [id]);
-        console.log(chosenCat.rows[0].available)
-        console.log(ongId)
-        console.log(chosenCat.rows[0].ongId)
         if (chosenCat.rowCount === 0) {
             return response.status(404).send("Gato não encontrado")
         }
