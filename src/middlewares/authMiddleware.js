@@ -1,6 +1,6 @@
 import { db } from "../database/database.conection.js"
 
-export async function validateAuth(request, response, next) {
+export async function authMiddleware(request, response, next) {
     const { authorization } = request.headers
     const token = authorization?.replace('Bearer ', '')
     try {
@@ -18,4 +18,4 @@ export async function validateAuth(request, response, next) {
         response.status(500).send(err)
     }
 }
-export default validateAuth;
+export default authMiddleware;
