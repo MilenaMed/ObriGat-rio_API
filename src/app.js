@@ -7,9 +7,9 @@ const app = express();
 
 //Ferramentas
 app.use(express.json())
+app.use(cors())
 app.use(router)
 dotenv.config()
-app.use(cors())
 
 
 

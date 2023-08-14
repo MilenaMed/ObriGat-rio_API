@@ -36,7 +36,7 @@ export async function getMyCats(request, response) {
     const { ongId } = response.locals
     try {
         const { rows: cats } = await db.query(`
-        SELECT cat."catName", cat.photo, cat.available, cat."ongContact", cat.datadescription
+        SELECT cat.id, cat."catName", cat.photo, cat.available, cat."ongContact", cat.datadescription
         FROM cat
         WHERE cat."ongId"=$1
     `, [ongId]);

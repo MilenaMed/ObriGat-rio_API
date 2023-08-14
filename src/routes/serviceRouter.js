@@ -7,7 +7,7 @@ import { AddServiceSchema } from "../schema/serviceSchema.js"
 const serviceRouter = Router()
 
 serviceRouter.post("/addService", validateSchema(AddServiceSchema), authMiddleware, postAddService)
-serviceRouter.get("/home", getCats)
+serviceRouter.get("/home", authMiddleware, getCats)
 serviceRouter.get("/myCats", authMiddleware, getMyCats)
 serviceRouter.post("/myCats/:id", authMiddleware, updateAvailability)
 
